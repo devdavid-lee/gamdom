@@ -3,21 +3,26 @@ import { SportEvent } from '../entities';
 import { ICreateSportEvent, IUpdateSportEvent } from '../types';
 import { AppError } from '../utils/errors';
 import { ERROR_MESSAGES } from '../consts/errorMessages';
-
-const sportEventRepository = AppDataSource.getRepository(SportEvent);
+import { Repository } from 'typeorm';
 
 export class SportEventService {
-  static async getAllEvents() {
+  private sportEventRepository: Repository<SportEvent>;
+
+  constructor() {
+    this.sportEventRepository = AppDataSource.getRepository(SportEvent);
+  }
+
+  async getAllEvents() {
     try {
-      return await sportEventRepository.find();
+      return await this.sportEventRepository.find();
     } catch (error) {
       throw new AppError(ERROR_MESSAGES.ERROR_FETCHING_EVENTS, 500);
     }
   }
 
-  static async getEventById(id: number) {
+  async getEventById(id: string) {
     try {
-      const event = await sportEventRepository.findOneBy({ eventId: id });
+      const event = await this.sportEventRepository.findOneBy({ eventId: id });
       if (!event) {
         throw new AppError(ERROR_MESSAGES.EVENT_NOT_FOUND, 404);
       }
@@ -28,30 +33,30 @@ export class SportEventService {
     }
   }
 
-  static async createEvent(eventData: ICreateSportEvent) {
+  async createEvent(eventData: ICreateSportEvent) {
     try {
-      const event = sportEventRepository.create(eventData);
-      return await sportEventRepository.save(event);
+      const event = this.sportEventRepository.create(eventData);
+      return await this.sportEventRepository.save(event);
     } catch (error) {
       throw new AppError(ERROR_MESSAGES.ERROR_CREATING_EVENT, 500);
     }
   }
 
-  static async updateEvent(id: number, eventData: IUpdateSportEvent) {
+  async updateEvent(id: string, eventData: IUpdateSportEvent) {
     try {
       const event = await this.getEventById(id);
-      sportEventRepository.merge(event, eventData);
-      return await sportEventRepository.save(event);
+      this.sportEventRepository.merge(event, eventData);
+      return await this.sportEventRepository.save(event);
     } catch (error) {
       if (error instanceof AppError) throw error;
       throw new AppError(ERROR_MESSAGES.ERROR_UPDATING_EVENT, 500);
     }
   }
 
-  static async deleteEvent(id: number) {
+  async deleteEvent(id: string) {
     try {
       const event = await this.getEventById(id);
-      await sportEventRepository.remove(event);
+      await this.sportEventRepository.softDelete(event);
     } catch (error) {
       if (error instanceof AppError) throw error;
       throw new AppError(ERROR_MESSAGES.ERROR_DELETING_EVENT, 500);
