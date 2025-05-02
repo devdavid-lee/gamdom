@@ -1,0 +1,5 @@
+frontend-gamdom/node_modules
+backend-gamdom/node_modules
+
+frontend-gamdom/.env
+backend-gamdom/.env
