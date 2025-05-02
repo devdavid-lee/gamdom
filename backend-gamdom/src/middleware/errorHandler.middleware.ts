@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { AppError } from '../utils/errors';
 import { ERROR_MESSAGES } from '../consts/errorMessages';
+import logger from '../utils/logger';
 
-export const errorHandler = (
+export const errorHandlerMiddleware = (
   err: Error,
   req: Request,
   res: Response,
@@ -17,7 +18,6 @@ export const errorHandler = (
     return;
   }
 
-  // Handle TypeORM errors
   if (err.name === 'QueryFailedError') {
     res.status(400).json({
       status: 'fail',
@@ -26,7 +26,6 @@ export const errorHandler = (
     return;
   }
 
-  // Handle validation errors
   if (err.name === 'ValidationError') {
     res.status(400).json({
       status: 'fail',
@@ -35,8 +34,7 @@ export const errorHandler = (
     return;
   }
 
-  // Handle unknown errors
-  console.error('Error:', err);
+  logger.error('Error:', err);
   res.status(500).json({
     status: 'error',
     message: ERROR_MESSAGES.SERVER_ERROR,

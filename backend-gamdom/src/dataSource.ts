@@ -1,5 +1,9 @@
 import { DataSource } from 'typeorm';
 import { SportEvent } from './entities/SportEvent';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
@@ -7,10 +11,11 @@ export const AppDataSource = new DataSource({
   port: parseInt(process.env.DB_PORT || '5432'),
   username: process.env.DB_USERNAME || 'postgres',
   password: process.env.DB_PASSWORD || 'postgres',
-  database: process.env.DB_DATABASE || 'betting',
-  synchronize: true,
-  logging: true,
+  database: process.env.DB_DATABASE || 'gamdom',
+  synchronize: false,
+  logging: false,
   entities: [SportEvent],
   subscribers: [],
-  migrations: [],
+  migrations: ['dist/migrations/*.js'],
+  namingStrategy: new SnakeNamingStrategy(),
 });
