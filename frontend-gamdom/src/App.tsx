@@ -1,9 +1,10 @@
 import { BettingEventsPage } from '@/pages/BettingEvents';
-import { BrowserRouter as Router, Navigate, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { theme } from '@/styles/theme';
 import { NotFoundPage } from '@/pages/NotFound';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { Layout } from '@/components/Layout/Layout';
 import { ToastContainer } from 'react-toastify';
 
@@ -28,6 +29,7 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
+    <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme}>
             <Router>
@@ -42,6 +44,7 @@ function App() {
             </Router>
         </ThemeProvider>
       </QueryClientProvider>
+    </ErrorBoundary>
   )
 }
 
