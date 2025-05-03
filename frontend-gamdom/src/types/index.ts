@@ -1,5 +1,5 @@
 export interface SportEvent {
-  eventId: string;
-  eventName: string;
-  odds: number;
+    eventId: string;
+    eventName: string;
+    odds: number;
 }
