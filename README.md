@@ -6,9 +6,10 @@ A full-stack application for managing and placing sports betting events.
 
 ```
 gamdom/
-├── frontend-gamdom/     # React + TypeScript frontend
-├── backend-gamdom/      # Node.js + TypeScript backend
-└── docker-compose.yml   # Docker configuration
+├── frontend-gamdom/                  # React + TypeScript frontend
+├── backend-gamdom/                   # Node.js + TypeScript backend
+├── gamdom.postman_collection.json    # Postman collection
+└── docker-compose.yml                # Docker configuration
 ```
 
 ## Features
@@ -119,20 +120,17 @@ You can populate the database with initial demo/test data using the seed script:
 
    This will insert sample sport events into your database.
 
-#### Start the backend:
-    ```bash
+#### Start the backend
     cd backend-gamdom
     npm run dev
-    ```
-#### Start the frontend:
-    ```bash
+#### Start the frontend
     cd frontend-gamdom
     npm run dev
-    ```
 
 ## Testing
 
 ### Frontend Tests
+
 ```bash
 cd frontend-gamdom
 npm test
